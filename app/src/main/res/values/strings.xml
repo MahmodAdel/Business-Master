@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Business V1</string>
+    <string name="business_list">Business List</string>
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
+</resources>
