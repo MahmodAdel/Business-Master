@@ -162,7 +162,7 @@ class BusinessAdapter(mcontext: Context?, private val listener: BusinessAdapter.
                     .error(R.drawable.ic_error)
                     .into(imageView)
 
-
+/*
                 tvName.text = "Name: ${business.name}"
                 tvPrice.text = "Price: {${business.price}}"
                 tvRating.text = "Rating: {${business.rating}}"
@@ -170,7 +170,7 @@ class BusinessAdapter(mcontext: Context?, private val listener: BusinessAdapter.
                 for (category in business.category) {
                     tvCategory.append(" ${category.title} ")
 
-                }
+                }*/
             }
         }
 

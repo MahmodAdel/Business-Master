@@ -1,7 +1,9 @@
 package com.example.businessv1.frame.presentation.business
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,107 +18,59 @@ import com.example.businessv1.frame.presentation.events.BusinessEvent
 import com.example.businessv1.frame.presentation.utils.OnLoadMoreListener
 import com.example.businessv1.frame.presentation.utils.RecyclerViewLoadMoreScroll
 import com.example.businessv1.frame.presentation.utils.SwipeHelper
+import com.example.businessv1.frame.presentation.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_business.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class BusinessFragment : Fragment(R.layout.fragment_business),BusinessAdapter.OnItemClickListener{
+class BusinessFragment : Fragment(R.layout.fragment_business),BusinessListAdapter.Interaction{
 
-    lateinit var  adapter: BusinessAdapter
     private val viewModel: BusinessViewModel by viewModels()
-    private var _binding: FragmentBusinessBinding? = null
+    lateinit var adapter: BusinessListAdapter
+    lateinit var _binding: FragmentBusinessBinding
     lateinit var scrollListener: RecyclerViewLoadMoreScroll
     lateinit var mLayoutManager: LinearLayoutManager
     private val loadingDuration: Long
         get() = (resources.getInteger(R.integer.loadingAnimDuration) / 0.8).toLong()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentBusinessBinding.bind(view)
-//** Set the adapterLinear of the RecyclerView
+
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentBusinessBinding.inflate(inflater, container, false)
+        _binding.viewModel = viewModel
+        _binding.lifecycleOwner = this
+
         setAdapter()
-        //** Set the Layout Manager of the RecyclerView
         setRVLayoutManager()
-
-        //** Set the scrollListerner of the RecyclerView
         setRVScrollListener()
-
-        setSwipInit()
 
         subscribeObservers()
         viewModel.offset=0
         viewModel.setStateEvent(BusinessEvent.GetBusinessEvent,"Cairo",viewModel.offset,10)
+        return _binding.root
+
     }
 
-    private fun setSwipInit() {
-        val itemTouchHelper = ItemTouchHelper(object : SwipeHelper(recycler_view) {
-            override fun instantiateUnderlayButton(position: Int): List<UnderlayButton> {
-                var buttons = listOf<UnderlayButton>()
-                val deleteButton = deleteButton(position)
-                val markAsUnreadButton = markAsUnreadButton(position)
-                val archiveButton = archiveButton(position)
-                when (position) {
-                    1 -> buttons = listOf(deleteButton)
-                    2 -> buttons = listOf(deleteButton, markAsUnreadButton)
-                    3 -> buttons = listOf(deleteButton, markAsUnreadButton, archiveButton)
-                    else -> Unit
-                }
-                return buttons
-            }
-        })
 
-        itemTouchHelper.attachToRecyclerView(recycler_view)
-    }
-    private fun deleteButton(position: Int) : SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            context,
-            "Delete",
-            14.0f,
-            android.R.color.holo_red_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                  //  toast("Deleted item $position")
-                }
-            })
-    }
-
-    private fun markAsUnreadButton(position: Int) : SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            context,
-            "Mark as unread",
-            14.0f,
-            android.R.color.holo_green_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                   // toast("Marked as unread item $position")
-                }
-            })
-    }
-
-    private fun archiveButton(position: Int) : SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            context,
-            "Archive",
-            14.0f,
-            android.R.color.holo_blue_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                   // toast("Archived item $position")
-                }
-            })
-    }
 
     private fun setAdapter() {
-        adapter = BusinessAdapter(context,this)
-        adapter.notifyDataSetChanged()
-        recycler_view.adapter = adapter
+        adapter = BusinessListAdapter(interaction = this,mcontext = requireContext())
+        _binding.recyclerView.adapter = adapter
     }
 
     private fun setRVLayoutManager() {
         mLayoutManager = LinearLayoutManager(context)
-        recycler_view.layoutManager = mLayoutManager
-        recycler_view.setHasFixedSize(true)
+        _binding.recyclerView.layoutManager = mLayoutManager
+        _binding.recyclerView.setHasFixedSize(true)
         updateRecyclerViewAnimDuration()
     }
 
@@ -128,42 +82,33 @@ class BusinessFragment : Fragment(R.layout.fragment_business),BusinessAdapter.On
                 LoadMoreData()
             }
         })
-        recycler_view.addOnScrollListener(scrollListener)
+        _binding.recyclerView.addOnScrollListener(scrollListener)
     }
+
+
     private fun LoadMoreData() {
         //Add the Loading View
-        adapter.addLoadingView()
-        viewModel.offset+=10
-        viewModel.setStateEvent(BusinessEvent.GetBusinessEvent,"Cairo",viewModel.offset,10)
+      //  adapter.addLoadingView()
+       // viewModel.offset+=10
+       // viewModel.setStateEvent(BusinessEvent.GetBusinessEvent,"Cairo",viewModel.offset,10)
 
     }
 
 
 
     private fun subscribeObservers(){
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            when(dataState){
-                is DataState.Success<List<Business>> -> {
-                    displayProgressBar(false)
-                    showList(dataState.data)
-                }
-                is DataState.Error -> {
-                    displayProgressBar(false)
-                    displayError(dataState.exception.message)
-                }
-                is DataState.Loading -> {
-                    displayProgressBar(true)
-                }
-            }
-        })
 
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            _binding?.root?.let { it1 -> showErrorSnackBar(it1, it) }
+            viewModel.onErrorMsgDisplay()
+        })
 
     }
     private fun displayError(message: String?){
       //  if(message != null) text.text = message else text.text = "Unknown error."
     }
 
-    private fun showList(businessList: List<Business>){
+  /*  private fun showList(businessList: List<Business>){
         if(businessList.isNotEmpty()){
             if (viewModel.offset != 0){
                 adapter.removeLoadingView()
@@ -183,8 +128,8 @@ class BusinessFragment : Fragment(R.layout.fragment_business),BusinessAdapter.On
 
 
 
-    }
-    private fun updateRecyclerViewAnimDuration() = recycler_view.itemAnimator?.run {
+    }*/
+    private fun updateRecyclerViewAnimDuration() = _binding.recyclerView.itemAnimator?.run {
         removeDuration = loadingDuration * 60 / 100
         addDuration = loadingDuration
     }
@@ -193,12 +138,17 @@ class BusinessFragment : Fragment(R.layout.fragment_business),BusinessAdapter.On
         progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
     }
 
-    override fun onItemClick(business: Business) {
-        val action = BusinessFragmentDirections.actionBusinessFragmentToDetailsFragment(business)
-        findNavController().navigate(action)
-    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding.unbind()
     }
+
+    override fun onItemSelected(
+        business: Business,
+        previousMoviePoster: String,
+        nextMoviePoster: String
+    ) {
+        val action = BusinessFragmentDirections.actionBusinessFragmentToDetailsFragment(business)
+        findNavController().navigate(action)    }
 }

@@ -1,5 +1,6 @@
 package com.example.businessv1.frame.datasource.network
 
+import com.example.businessv1.frame.datasource.network.model.BusinessNetworkDetails
 import com.example.businessv1.frame.datasource.network.model.BusinessNetworkEntity
 import com.example.businessv1.frame.datasource.network.model.BusinessNetworkResponse
 import com.example.businessv1.frame.datasource.network.retrofit.BusinessInterface
@@ -13,7 +14,7 @@ constructor(
         return businessInterface.getBusiness(query,limit,offset)
     }
 
-    override suspend fun getDetails(id: String): BusinessNetworkEntity {
+    override suspend fun getDetails(id: String): BusinessNetworkDetails {
         return businessInterface.getBusinessDetails(id)
     }
 

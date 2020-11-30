@@ -22,9 +22,16 @@ constructor(
 
     public var offset:Int = 0
     private val _dataState: MutableLiveData<DataState<List<Business>>> = MutableLiveData()
-
     val dataState: LiveData<DataState<List<Business>>>
         get() = _dataState
+
+    val error: LiveData<DataState<Any>>
+        get() = _error
+    private val _error: MutableLiveData<DataState<Any>> = MutableLiveData()
+
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     fun setStateEvent(mainStateEvent: BusinessEvent,query:String,offset:Int,limit:Int){
         viewModelScope.launch {
@@ -32,12 +39,27 @@ constructor(
                 is BusinessEvent.GetBusinessEvent -> {
                     getBusiness.getBusiness(query,offset,limit)
                         .onEach {dataState ->
-                            _dataState.value = dataState
+                            when(dataState){
+                                is DataState.Success<List<Business>> -> {
+                                    _dataState.postValue(dataState)
+                                    _isLoading.value = false
+
+                                }
+                                is DataState.Error -> {
+                                    _error.postValue(dataState)
+                                    _isLoading.value = false
+                                }
+                                is DataState.Loading -> {
+                                    _isLoading.value = true
+                                }
+                            }
                         }
                         .launchIn(viewModelScope)
                 }
             }
         }
     }
-
+    fun onErrorMsgDisplay() {
+        _error.value = null
+    }
 }

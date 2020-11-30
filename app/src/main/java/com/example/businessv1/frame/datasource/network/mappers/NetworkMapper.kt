@@ -1,12 +1,8 @@
 package com.example.businessv1.frame.datasource.network.mappers
 
-import com.example.businessv1.business.domain.model.Business
-import com.example.businessv1.business.domain.model.BusinessResponse
-import com.example.businessv1.business.domain.model.Category
+import com.example.businessv1.business.domain.model.*
 import com.example.businessv1.business.domain.util.EntityMapper
-import com.example.businessv1.frame.datasource.network.model.BusinessNetworkEntity
-import com.example.businessv1.frame.datasource.network.model.BusinessNetworkResponse
-import com.example.businessv1.frame.datasource.network.model.CategoryNetwork
+import com.example.businessv1.frame.datasource.network.model.*
 
 
 import javax.inject.Inject
@@ -95,6 +91,38 @@ constructor(): EntityMapper<BusinessNetworkResponse, BusinessResponse> {
         return businessResponseCacheEntity.businesses.mapNotNull {
             mapFromSubBusinessEntity(it)
         }
+    }
+
+    fun mapFromDetailsEntity(details: BusinessNetworkDetails): BusinessDetails {
+        return BusinessDetails(
+            id = details.id?:"",
+            alias = details.alias?:"",
+            image_url = details.image_url?:"",
+            name = details.name?:"",
+            phone = details.phone?:"",
+            categories = mapFromSubEntityListBusinessCategory(details.categories),
+            rating = details.rating,
+            review_count = details.review_count,
+            location = mapFromSubEntityListBusinessLocation(details.location)?:Location()
+
+        )
+    }
+
+    private fun mapFromSubEntityListBusinessLocation(location: BusinessNetworkDetailsLocation): Location {
+        return if (location != null)
+            Location(
+                address1 = location.address1?:"",
+                address2 = location.address2?:"",
+                address3 = location.address3?:"",
+                city = location.city?:"",
+                zip_code = location.zip_code?:"",
+                country = location.country?:"",
+                state = location.state?:"",
+                display_address = location.display_address,
+                cross_streets = location.cross_streets?:""
+            )
+        else
+            Location()
     }
 
 

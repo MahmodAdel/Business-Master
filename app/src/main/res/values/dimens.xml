@@ -22,4 +22,5 @@
 
     <dimen name="bottom_bar_icon_padding">24dp</dimen>
     <dimen name="bottom_bar_height">@dimen/fab_size</dimen>
+    <dimen name="corner_radius">30dp</dimen>
 </resources>

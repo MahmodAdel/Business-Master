@@ -3,6 +3,7 @@ package com.example.businessv1.business.interactors
 import com.example.businessv1.business.data.cache.CacheDataSource
 import com.example.businessv1.business.data.network.NetworkDataSource
 import com.example.businessv1.business.domain.model.Business
+import com.example.businessv1.business.domain.model.BusinessDetails
 import com.example.businessv1.business.domain.state.DataState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,8 @@ constructor(
 
     }
 
-    suspend fun getBusinessDetails(busniess_id:String):Flow<DataState<Business>> = flow {
+    suspend fun getBusinessDetails(busniess_id:String):Flow<DataState<BusinessDetails>> = flow {
+         emit(DataState.Loading)
         try {
             val networkBusinessDetails = networkDataSource.getDetails(busniess_id)
             emit(DataState.Success(networkBusinessDetails))
