@@ -5,9 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.businessv1.business.domain.util.Converter
 import com.example.businessv1.frame.datasource.cache.model.BusinessCacheEntity
+import com.example.businessv1.frame.datasource.cache.model.BusinessCacheFavorite
 
 
-@Database(entities = [BusinessCacheEntity::class ], version = 1)
+@Database(entities = [BusinessCacheEntity::class,BusinessCacheFavorite::class ], version = 1)
 @TypeConverters(Converter::class)
 abstract class BusinessDatabase: RoomDatabase() {
 

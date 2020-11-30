@@ -5,6 +5,7 @@ import com.example.businessv1.business.domain.model.BusinessResponse
 import com.example.businessv1.business.domain.model.Category
 import com.example.businessv1.business.domain.util.EntityMapper
 import com.example.businessv1.frame.datasource.cache.model.BusinessCacheEntity
+import com.example.businessv1.frame.datasource.cache.model.BusinessCacheFavorite
 import com.example.businessv1.frame.datasource.cache.model.BusinessResponseCacheEntity
 import com.example.businessv1.frame.datasource.cache.model.CategoryCacheEntity
 import javax.inject.Inject
@@ -25,6 +26,11 @@ constructor(): EntityMapper<BusinessResponseCacheEntity, BusinessResponse> {
             mapFromSubBusinessEntity(it)
         }
     }
+    fun mapFavFromSubEntityListBusiness(businesses: List<BusinessCacheFavorite>): List<Business> {
+        return businesses.map {
+            mapFavFromSubBusinessEntity(it)
+        }
+    }
      fun mapFromSubEntityListBusinessCategory(categories: List<CategoryCacheEntity>): List<Category> {
         return categories.map {
             mapFromSubBusinessEntityCategory(it)
@@ -39,6 +45,17 @@ constructor(): EntityMapper<BusinessResponseCacheEntity, BusinessResponse> {
     }
 
      fun mapFromSubBusinessEntity(it: BusinessCacheEntity): Business {
+        return Business(
+            id = it.id,
+            image_url = it.image_url,
+            name = it.name,
+            rating = it.rating,
+            category = mapFromSubEntityListBusinessCategory(it.category),
+            review_count = it.review_count,
+            price = it.price
+        )
+    }
+    fun mapFavFromSubBusinessEntity(it: BusinessCacheFavorite): Business {
         return Business(
             id = it.id,
             image_url = it.image_url,
@@ -79,6 +96,18 @@ constructor(): EntityMapper<BusinessResponseCacheEntity, BusinessResponse> {
 
      fun mapToSubEntity(it: Business): BusinessCacheEntity {
         return BusinessCacheEntity(
+            id = it.id!!,
+            image_url = it.image_url!!,
+            name = it.name!!,
+            rating = it.rating!!,
+            category = mapToSubEntityBusinessListCategory(it.category!!),
+            review_count = it.review_count!!,
+            price = it.price!!
+        )
+    }
+
+    fun mapFavToSubEntity(it: Business): BusinessCacheFavorite {
+        return BusinessCacheFavorite(
             id = it.id!!,
             image_url = it.image_url!!,
             name = it.name!!,

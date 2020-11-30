@@ -24,8 +24,12 @@
     app:argType="com.example.businessv1.business.domain.model.Business"/>
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_davorite"
+        tools:layout="@layout/fragment_favorite"
         android:id="@+id/favoriteFragment"
         android:name="com.example.businessv1.frame.presentation.favorite.FavoriteFragment"
-        android:label="FavoriteFragment" />
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 </navigation>

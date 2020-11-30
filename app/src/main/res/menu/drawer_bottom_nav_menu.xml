@@ -3,10 +3,13 @@
     <item
         android:id="@+id/businessFragment"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home" />
+        android:title="Business List"
+        
+        />
 
     <item
         android:id="@+id/favoriteFragment"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:title="Search" />
+        android:title="Business Favorite"
+        />
 </menu>
