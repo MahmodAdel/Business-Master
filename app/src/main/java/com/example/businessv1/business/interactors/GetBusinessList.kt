@@ -70,13 +70,18 @@ constructor(
         }
     }
 
+
+
     suspend fun insertFavorite(business:Business){
         cacheDataSource.insertFavorite(business)
     }
 
+
     suspend fun deleteFavorite(business:Business){
         cacheDataSource.deleteBusinessFav(business.id)
     }
+
+
 
     suspend fun getAllFavorite():List<Business>{
         return cacheDataSource.getFav()

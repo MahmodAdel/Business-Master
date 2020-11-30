@@ -21,7 +21,7 @@ constructor(
         val position = params.key ?: BUSINESS_STARTING_PAGE_INDEX
 
         return try {
-            val response = networkDataSource.getList(query, BUSINESS_LIMIT, position)
+            val response = networkDataSource.getList(query, position,BUSINESS_LIMIT)
             if (position == 0){
                 cacheDataSource.deleteAll()
                 cacheDataSource.insertList(response.businesses)
@@ -31,7 +31,7 @@ constructor(
 
             LoadResult.Page(
                 data = businessList,
-                prevKey = if (position == BUSINESS_STARTING_PAGE_INDEX) null else position - 1,
+                prevKey = if (position == BUSINESS_STARTING_PAGE_INDEX) null else position - BUSINESS_LIMIT,
                 nextKey = if (businessList.isEmpty()) null else position + BUSINESS_LIMIT
             )
         } catch (exception: IOException){
