@@ -29,4 +29,18 @@ constructor(
         businessDaoService.deleteAll()
     }
 
+    override suspend fun deleteBusinessFav(businessId: String) {
+        businessDaoService.deleteBusinessFav(businessId)
+    }
+
+
+
+    override suspend fun insertFavorite(business: Business) {
+        businessDaoService.insertFav(cacheMapper.mapFavToSubEntity(business))
+    }
+
+    override suspend fun getFav(): List<Business> {
+        return cacheMapper.mapFavFromSubEntityListBusiness(businessDaoService.getFav())
+    }
+
 }

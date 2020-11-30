@@ -16,7 +16,9 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
     }
+
 }
+
 
 allprojects {
     repositories {

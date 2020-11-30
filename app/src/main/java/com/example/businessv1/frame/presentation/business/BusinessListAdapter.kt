@@ -13,6 +13,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,7 @@ import screenWidth
 
  class BusinessListAdapter(
     private val interaction: Interaction? = null
-,mcontext:Context) : ListAdapter<Business, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+,mcontext:Context) : PagingDataAdapter<Business, RecyclerView.ViewHolder>(MovieDiffCallback()) {
 
 
     private val originalBg: Int by bindColor(mcontext!!, R.color.list_item_bg_collapsed)
@@ -60,24 +61,10 @@ import screenWidth
             return oldItem == newItem
         }
     }
-    fun addData(dataViews: List<Business>) {
-        addData(dataViews)
-       // notifyDataSetChanged()
-    }
-    /* fun removeLoadingView() {
-         //Remove loading item
-         if (businessList.size != 0) {
-             businessList.removeAt(businessList.size - 1)
-             notifyItemRemoved(businessList.size)
-         }
+
+      fun getItemPosition(position: Int):Business{
+         return getItem(position)!!
      }
-     fun addLoadingView() {
-         //add loading item
-         Handler().post {
-             Items(null)
-             notifyItemInserted(getItems.size - 1)
-         }
-     }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == Constant.VIEW_TYPE_ITEM) {
@@ -117,7 +104,7 @@ import screenWidth
             val previousMovie = if (position == 0) getItem(itemCount - 1) else getItem(position - 1)
             val nextMovie = if (position == itemCount - 1) getItem(0) else getItem(position + 1)
             val businessHolder: BusinessViewHolder = holder as BusinessViewHolder
-            businessHolder.bind(movie, previousMovie, nextMovie)
+            businessHolder.bind(movie!!, previousMovie!!, nextMovie!!)
         }
     }
      inner class BusinessViewHolder constructor(

@@ -1,9 +1,14 @@
 package com.example.businessv1.business.interactors
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
+import com.example.businessv1.business.data.BusinessPagingSource
 import com.example.businessv1.business.data.cache.CacheDataSource
 import com.example.businessv1.business.data.network.NetworkDataSource
 import com.example.businessv1.business.domain.model.Business
 import com.example.businessv1.business.domain.model.BusinessDetails
+import com.example.businessv1.business.domain.model.BusinessFavorite
 import com.example.businessv1.business.domain.state.DataState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +28,16 @@ constructor(
      * Insert blogs into cache
      * Show List<Blog>
      */
+
+    fun getSearchResults(query: String) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { BusinessPagingSource(networkDataSource,cacheDataSource, query) }
+        ).liveData
 
     suspend fun getBusiness(query:String,offset:Int,limit:Int):Flow<DataState<List<Business>>> = flow {
         emit(DataState.Loading)
@@ -53,6 +68,23 @@ constructor(
         }catch (e : Exception){
             emit(DataState.Error(e))
         }
+    }
+
+
+
+    suspend fun insertFavorite(business:Business){
+        cacheDataSource.insertFavorite(business)
+    }
+
+
+    suspend fun deleteFavorite(business:Business){
+        cacheDataSource.deleteBusinessFav(business.id)
+    }
+
+
+
+    suspend fun getAllFavorite():List<Business>{
+        return cacheDataSource.getFav()
     }
 
 
