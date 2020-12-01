@@ -27,6 +27,20 @@ android {
 
 
     }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
+    ndkVersion '21.3.6528147'
+
+    splits{
+        density{
+            enable true
+            exclude 'Idpi','mdpi'
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,10 +55,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.0'
     }
 
 
@@ -100,12 +110,23 @@ dependencies {
     /*
            Tests
         */
+
+    // Mockito for testing
+    implementation "org.mockito:mockito-core:$mockito"
+   /* implementation "org.mockito:mockito-all:$mockitoAll"
+    implementation "com.squareup.okhttp3:mockwebserver:$mockWebserver"*/
     // Hilt
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
     androidTestImplementation 'androidx.test:core-ktx:1.3.0'
+
+    // testImplementation for pure JVM unit tests
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines"
+
+    // androidTestImplementation for Android instrumentation tests
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines"
 
 
 }

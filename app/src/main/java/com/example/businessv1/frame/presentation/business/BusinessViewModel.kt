@@ -20,6 +20,7 @@ constructor(
     private val getBusiness: GetBusinessList,
     @Assisted private val state: SavedStateHandle
 ): ViewModel() {
+    public  val DEFAULT_QUERY = "NewYork"
     private val currentQuery = state.getLiveData(CURRENT_QUERY, DEFAULT_QUERY)
     val businessFavList: LiveData<List<Business>>
         get() = _businessFavList
@@ -98,6 +99,5 @@ constructor(
 
     companion object {
         private const val CURRENT_QUERY = "current_query"
-        private const val DEFAULT_QUERY = "NewYork"
     }
 }

@@ -1,6 +1,8 @@
 package com.example.businessv1.frame.presentation
 
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,9 +25,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-
-
-
+    companion object{
+        init {
+            System.loadLibrary("keys")
+        }
+    }
+    public external fun getNativeKey(): String?
 
 
     @Inject
@@ -34,6 +39,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val key1 =
+            String(Base64.decode(getNativeKey(), Base64.DEFAULT))
+        Log.d("SecureKey",key1)
         initAppBar()
         initNavController();
 
@@ -73,8 +81,4 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
-
-
-
-
 }

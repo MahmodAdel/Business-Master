@@ -43,14 +43,22 @@ constructor(
         emit(DataState.Loading)
         delay(1000)
         try {
-            val networkBusiness = networkDataSource.getList(query,limit,offset).businesses
-            if (offset == 0) {
-                cacheDataSource.deleteAll()
-                cacheDataSource.insertList(networkBusiness)
-                emit(DataState.Success(networkBusiness))
-            }else{
-                emit(DataState.Success(networkBusiness))
+            when(val networkBusiness = networkDataSource.getList(query,limit,offset)){
+                is DataState.Success->{
+                    if (offset == 0) {
+                        cacheDataSource.deleteAll()
+                        cacheDataSource.insertList(networkBusiness.data.businesses)
+                        emit(DataState.Success(networkBusiness.data.businesses))
+                    }else{
+                        emit(DataState.Success(networkBusiness.data.businesses))
+                    }
+                }
+                is DataState.Error->{
+                    emit(DataState.Error(exception = Exception("")))
+
+                }
             }
+
 
         }catch (e : Throwable){
             val cachedBlogs = cacheDataSource.get()
@@ -62,8 +70,16 @@ constructor(
     suspend fun getBusinessDetails(busniess_id:String):Flow<DataState<BusinessDetails>> = flow {
          emit(DataState.Loading)
         try {
-            val networkBusinessDetails = networkDataSource.getDetails(busniess_id)
-            emit(DataState.Success(networkBusinessDetails))
+            when(val networkBusinessDetails = networkDataSource.getDetails(busniess_id)){
+                is DataState.Success->{
+                    emit(DataState.Success(networkBusinessDetails.data))
+
+                }
+                is DataState.Error->{
+                    emit(DataState.Error(exception = Exception("")))
+
+                }
+            }
 
         }catch (e : Exception){
             emit(DataState.Error(e))

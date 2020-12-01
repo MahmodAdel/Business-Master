@@ -18,7 +18,7 @@ data class Business(
     var name:String,
     @SerializedName("category")
     @Expose
-    var category:List<Category>,
+    var category: List<Category>,
     @SerializedName("price")
     @Expose
     var price:String,
@@ -27,5 +27,5 @@ data class Business(
     var rating:String,
     @SerializedName("review_count")
     @Expose
-    var review_count :Int
+    var review_count:Int
 ) : Parcelable
