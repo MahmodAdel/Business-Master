@@ -1,5 +1,7 @@
 package com.example.businessv1.frame.presentation.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -9,10 +11,13 @@ import com.example.businessv1.business.domain.state.DataState
 import com.example.businessv1.business.interactors.GetBusinessList
 import com.example.businessv1.frame.presentation.business.BusinessListAdapter
 import com.example.businessv1.frame.presentation.events.BusinessEvent
+import com.example.businessv1.frame.presentation.utils.Constant
+import com.example.businessv1.frame.presentation.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import okhttp3.internal.Util
 
 @ExperimentalCoroutinesApi
 class DetailsViewModel
@@ -29,6 +34,7 @@ constructor(
     val error: LiveData<DataState<Any>>
         get() = _error
     private val _error: MutableLiveData<DataState<Any>> = MutableLiveData()
+
 
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -61,5 +67,6 @@ constructor(
     fun onErrorMsgDisplay() {
         _error.value = null
     }
+
 
 }

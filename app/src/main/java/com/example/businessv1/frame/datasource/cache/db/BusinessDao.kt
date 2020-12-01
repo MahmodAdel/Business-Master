@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.businessv1.frame.datasource.cache.model.BusinessCacheEntity
 import com.example.businessv1.frame.datasource.cache.model.BusinessCacheFavorite
+import java.util.*
 
 @Dao
 interface BusinessDao {

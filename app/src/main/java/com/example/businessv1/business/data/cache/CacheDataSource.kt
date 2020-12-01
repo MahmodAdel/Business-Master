@@ -2,6 +2,7 @@ package com.example.businessv1.business.data.cache
 
 import com.example.businessv1.business.domain.model.Business
 import com.example.businessv1.business.domain.model.BusinessFavorite
+import java.util.*
 
 
 interface CacheDataSource {
@@ -15,5 +16,5 @@ interface CacheDataSource {
     suspend fun deleteBusinessFav(businessId:String)
     suspend fun insertFavorite(business: Business)
 
-    suspend fun getFav():List<Business>
+    suspend fun getFav(): List<Business>
 }

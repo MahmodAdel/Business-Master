@@ -131,6 +131,10 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber:$timber"
 
+    implementation "com.googlecode.libphonenumber:libphonenumber:$phone"
+    implementation "com.intuit.sdp:sdp-android:$intuit"
+
+
 }
 
 

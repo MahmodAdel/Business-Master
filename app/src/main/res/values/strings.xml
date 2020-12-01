@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Business V1</string>
-    <string name="business_list">Business List</string>
-    <string name="navigation_drawer_open">navigation_drawer_open</string>
-    <string name="navigation_drawer_close">navigation_drawer_close</string>
     <string name="something_went_wrong">SomeThing Went Wrong</string>
     <string name="business_add">Added To Favorite</string>
     <string name="business_removed">Item Favorit Removed</string>

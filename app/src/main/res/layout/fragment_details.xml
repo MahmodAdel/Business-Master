@@ -27,11 +27,13 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent=".3" />
 
+
+
         <!--Header Images-->
         <ImageView
             android:id="@+id/imageView2"
             loadImageUrl="@{viewModel.dataState.image_url}"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/textViewtopgl"
@@ -66,6 +68,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/textViewtopgl"
             tools:src="@tools:sample/avatars" />
+        <ImageView
+
+            android:background="@color/cardview_shadow_start_color"
+            android:layout_margin="@dimen/_10sdp"
+            android:src="@drawable/ic_baseline_share_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
