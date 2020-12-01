@@ -76,13 +76,13 @@ constructor(
 
                 }
                 is DataState.Error->{
-                    emit(DataState.Error(exception = Exception("")))
+                    emit(DataState.Error(exception = Exception("error Ocure")))
 
                 }
             }
 
         }catch (e : Exception){
-            emit(DataState.Error(e))
+            emit(DataState.Error(exception = Exception("error Ocure")))
         }
     }
 

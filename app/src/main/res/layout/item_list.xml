@@ -99,9 +99,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
-                            android:text="@{String.valueOf(business.review_count)}"
+                            android:text="@{`Review Count: `+String.valueOf(business.review_count)}"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
                             tools:text="TextView" />
 
                         <TextView
@@ -109,9 +108,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
-                            android:text="@{String.valueOf(business.rating)}"
+                            android:text="@{`Rating: `+String.valueOf(business.rating)}"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
                             tools:text="TextView" />
 
                         <TextView
@@ -120,9 +118,8 @@
                             android:layout_height="wrap_content"
 
                             android:singleLine="true"
-                            android:text="@{business.price}"
+                            android:text="@{`Price:`+business.price}"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
                             tools:text="TextView"
                              />
 
@@ -135,9 +132,8 @@
                             android:layout_height="wrap_content"
 
                             android:singleLine="true"
-                            android:text="@{business.name}"
+                            android:text="@{`Name: `+business.name}"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
                             tools:text="TextView" />
 
                     </LinearLayout>

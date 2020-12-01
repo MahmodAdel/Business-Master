@@ -47,8 +47,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details){
     }
     private fun subscribeObservers(){
         viewModel.error.observe(viewLifecycleOwner, Observer {
-            showErrorSnackBar(_binding.root, it)
-            viewModel.onErrorMsgDisplay()
+            if (it != null) {
+                showErrorSnackBar(_binding.root, it.toString())
+                viewModel.onErrorMsgDisplay()
+            }
         })
 
     }

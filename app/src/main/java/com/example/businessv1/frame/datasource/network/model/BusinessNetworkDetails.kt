@@ -38,7 +38,7 @@ data class BusinessNetworkDetails(
     @Expose
     var rating:Double,
 
-    @SerializedName("Location")
+    @SerializedName("location")
     @Expose
     var location: BusinessNetworkDetailsLocation
 

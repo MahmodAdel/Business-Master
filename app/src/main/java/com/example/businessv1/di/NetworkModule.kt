@@ -7,6 +7,7 @@ import com.example.businessv1.frame.datasource.network.BusinessRetrofitService
 import com.example.businessv1.frame.datasource.network.BusinessRetrofitServiceImpl
 import com.example.businessv1.frame.datasource.network.mappers.NetworkMapper
 import com.example.businessv1.frame.datasource.network.retrofit.BusinessInterface
+import com.example.businessv1.frame.presentation.utils.Constant
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -25,6 +26,9 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object NetworkModule {
 
+     external fun getNativeKey(): String?
+
+
 
 
     @Singleton
@@ -33,7 +37,7 @@ object NetworkModule {
         return  Interceptor { chain: Interceptor.Chain ->
             val original: Request = chain.request()
             val requestBuilder: Request.Builder = original.newBuilder()
-                .addHeader("Authorization", "Bearer 5kWjeDUo7fzXcanqAOQUlchIALfcbnvZ_eNFScrNybAxPrDoAqX06SkTMN2hvmjlXKWeN120l4--vX_RVUA9nShtpDgGqR0egHAFkCFyHADjXfri04_Lo94xqE6-X3Yx")
+                .addHeader("Authorization", "Bearer "+ getNativeKey())
             val request: Request = requestBuilder.build()
             chain.proceed(request)
         }
@@ -65,7 +69,7 @@ object NetworkModule {
     fun provideRetrofitBuilder(gson: Gson,okHttpClient: OkHttpClient):Retrofit.Builder{
 
         return Retrofit.Builder()
-            .baseUrl("https://api.yelp.com/v3/businesses/")
+            .baseUrl(Constant.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
     }

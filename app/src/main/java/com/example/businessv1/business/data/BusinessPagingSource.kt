@@ -50,7 +50,7 @@ constructor(
             }
 
         } catch (exception: IOException){
-          /* if (cacheDataSource.get().isEmpty()){
+           if (cacheDataSource.get().isEmpty()){
                LoadResult.Error(exception)
            }else{
                LoadResult.Page(
@@ -58,8 +58,7 @@ constructor(
                    prevKey = if (position == BUSINESS_STARTING_PAGE_INDEX) null else position - 1,
                    nextKey = if (cacheDataSource.get().isEmpty()) null else position + BUSINESS_LIMIT
                )
-           }*/
-            LoadResult.Error(exception)
+           }
 
         } catch (exception: HttpException) {
             LoadResult.Error(exception)

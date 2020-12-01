@@ -139,9 +139,9 @@ class BusinessFragment : Fragment(R.layout.fragment_business),BusinessListAdapte
             viewModel.onErrorMsgDisplay()
         })
 
-        viewModel.businessList.observe(viewLifecycleOwner) {
+        viewModel.businessList.observe(viewLifecycleOwner, Observer {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
-        }
+        })
 
     }
     private fun updateRecyclerViewAnimDuration() = _binding.recyclerView.itemAnimator?.run {
